@@ -4,7 +4,7 @@ import useConsistentPlayerList from '../../utils/useConsistentPlayerList'
 import { PlayerEntity } from '../../state/types'
 import { useOnEntityAdded, useOnEntityRemoved } from 'miniplex-react'
 import { PlayersQuery } from '../../state/queries'
-import { isHost, myPlayer } from 'playroomkit'
+import { myPlayer, useIsHost } from 'playroomkit'
 import useRemoteProcedureCallback from '../../utils/useRemoteProcedureCallback'
 
 export default function LobbyScreen({ onNext = () => {}, onBack = () => {} }: { onNext?: () => void; onBack?: () => void }) {
@@ -22,6 +22,8 @@ export default function LobbyScreen({ onNext = () => {}, onBack = () => {} }: { 
 
   const remoteNext = useRemoteProcedureCallback('startGameplay', onNext)
 
+  const isHost = useIsHost()
+
   return (
     <>
       <HUD>
@@ -30,7 +32,7 @@ export default function LobbyScreen({ onNext = () => {}, onBack = () => {} }: { 
         <ul>
           {players.map(p => (
             <li key={p.id} style={{ color: p.getProfile().color.hexString as string }}>
-              {p.id} {isHost() && p.id === myPlayer().id && '(Host)'}
+              {p.id} {isHost && p.id === myPlayer().id && '(Host)'}
             </li>
           ))}
         </ul>
@@ -38,13 +40,13 @@ export default function LobbyScreen({ onNext = () => {}, onBack = () => {} }: { 
         <ul>
           {entities.map(p => (
             <li key={p.id} style={{ color: p.color as string }}>
-              {p.id} {p.isLocal && '(local)'} {isHost() && !p.isLocal && <button onClick={() => p.playroomState!.kick()}>Kick</button>}
+              {p.id} {p.isLocal && '(local)'} {isHost && !p.isLocal && <button onClick={() => p.playroomState!.kick()}>Kick</button>}
             </li>
           ))}
         </ul>
 
-        {isHost() && <button onClick={() => remoteNext()}>START</button>}
-        {!isHost() && <span>Awaiting host to start</span>}
+        {isHost && <button onClick={() => remoteNext()}>START</button>}
+        {!isHost && <span>Awaiting host to start</span>}
       </HUD>
     </>
   )
