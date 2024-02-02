@@ -1,3 +1,6 @@
+/**
+ * Reflects into local player network state the current GAME_STATE
+ */
 import { useEffect } from 'react'
 import { ON_ROUTE_CHANGE } from '../../state/gameStates'
 import { myPlayer } from 'playroomkit'

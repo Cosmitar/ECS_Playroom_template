@@ -1,3 +1,6 @@
+/**
+ * Handles player join and quit. Keeps network players in sync with local entities.
+ */
 import { PlayerState, onPlayerJoin } from 'playroomkit'
 import { useEffect } from 'react'
 import useConsistentPlayerList from '../../utils/useConsistentPlayerList'
