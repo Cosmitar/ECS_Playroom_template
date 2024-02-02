@@ -1,12 +1,10 @@
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
-import DemoScene from './scenes/DemoScene/DemoScene'
+import RouterScreen from './screens/RouterScreen/RouterScreen'
 
 const App = () => {
   return (
-    <Canvas camera={{ fov: 70, position: [0, 0, 3] }}>
-      <OrbitControls />
-      <DemoScene />
+    <Canvas shadows camera={{ fov: 50, position: [30, 50, 80] }}>
+      <RouterScreen />
     </Canvas>
   )
 }
