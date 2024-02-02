@@ -1,7 +1,19 @@
+/**
+ * Handles the insert coin (multiplayer room creation). Sets default states and triggers events on fails.
+ */
+import { Event } from 'eventery'
 import { insertCoin } from 'playroomkit'
 import { useEffect } from 'react'
 
+export const ON_ROOM_FULL = new Event()
+export const ON_PLAYER_KICKED = new Event()
+
 export default function InsertCoinSystem() {
+  // logs
+  useEffect(() => ON_ROOM_FULL.subscribe(() => console.log('Room full')), [])
+  useEffect(() => ON_PLAYER_KICKED.subscribe(() => console.log('You are banned here')), [])
+
+  // insert coin
   useEffect(() => {
     try {
       insertCoin(
@@ -24,8 +36,8 @@ export default function InsertCoinSystem() {
         }
       )
     } catch (e) {
-      e.message === 'ROOM_LIMIT_EXCEEDED' && console.log('Room full')
-      e.message === 'PLAYER_KICKED' && console.log('You are banned here')
+      e.message === 'ROOM_LIMIT_EXCEEDED' && ON_ROOM_FULL.emit()
+      e.message === 'PLAYER_KICKED' && ON_PLAYER_KICKED.emit()
     }
   }, [])
 
