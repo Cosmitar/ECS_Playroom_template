@@ -6,6 +6,8 @@ import { useOnEntityAdded, useOnEntityRemoved } from 'miniplex-react'
 import { PlayersQuery } from '../../state/queries'
 import { myPlayer, useIsHost } from 'playroomkit'
 import useRemoteProcedureCallback from '../../utils/useRemoteProcedureCallback'
+import { quitMultiplayerSession } from '../../utils/helpers'
+import Monitor from '../../utils/Monitor/Monitor'
 
 export default function LobbyScreen({ onNext = () => {}, onBack = () => {} }: { onNext?: () => void; onBack?: () => void }) {
   const players = useConsistentPlayerList()
@@ -47,7 +49,9 @@ export default function LobbyScreen({ onNext = () => {}, onBack = () => {} }: { 
 
         {isHost && <button onClick={() => remoteNext()}>START</button>}
         {!isHost && <span>Awaiting host to start</span>}
+        <button onClick={quitMultiplayerSession}>Quit</button>
       </HUD>
+      <Monitor />
     </>
   )
 }

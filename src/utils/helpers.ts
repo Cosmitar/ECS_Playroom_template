@@ -16,3 +16,7 @@ export const setHashValue = (name: string, value: string) => {
   url.hash = '#' + params.toString()
   window.location.href = url as unknown as string
 }
+
+export const quitMultiplayerSession = () => {
+  window.location.href = window.location.origin
+}
