@@ -4,7 +4,7 @@ import useRemoteProcedureCallback from '../../utils/useRemoteProcedureCallback'
 import { useEffect } from 'react'
 
 export default function ResultsScreen({ onNext = () => {}, onBack = () => {} }: { onNext?: () => void; onBack?: () => void }) {
-  const remoteNext = useRemoteProcedureCallback('endGameplay', onNext)
+  const remoteNext = useRemoteProcedureCallback('startGameplay', onNext)
 
   // reset states
   useEffect(() => {
