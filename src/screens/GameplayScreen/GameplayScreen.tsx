@@ -3,6 +3,7 @@ import HUD from '../../components/HUD'
 import useRemoteProcedureCallback from '../../utils/useRemoteProcedureCallback'
 import useAllSameState from '../../utils/useAllSameState'
 import { useEffect } from 'react'
+import { GAME_STATES } from '../../state/gameStates'
 
 export default function GameplayScreen({ onNext = () => {}, onBack = () => {} }: { onNext?: () => void; onBack?: () => void }) {
   const remoteNext = useRemoteProcedureCallback('endGameplay', onNext)
@@ -10,7 +11,7 @@ export default function GameplayScreen({ onNext = () => {}, onBack = () => {} }:
   const isHost = useIsHost()
 
   // only the host calls to remote redirect procedure when all players report have played
-  useAllSameState('playedTurn', true, () => isHost && remoteNext())
+  useAllSameState('playedTurn', true, () => isHost && remoteNext(), (player) => player.getState('GAME_STATE') === GAME_STATES.GAMEPLAY)
 
   useEffect(() => {
     // simulate play in between 1 and 4 seconds
