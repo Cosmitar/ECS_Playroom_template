@@ -7,6 +7,8 @@ import { useEffect } from 'react'
 
 export const ON_ROOM_FULL = new Event()
 export const ON_PLAYER_KICKED = new Event()
+export const ON_LAUNCH = new Event()
+export const ON_DISSCONNECT = new Event()
 
 export default function InsertCoinSystem() {
   // logs
@@ -30,9 +32,11 @@ export default function InsertCoinSystem() {
         },
         () => {
           console.log('on launch')
+          ON_LAUNCH.emit()
         },
         () => {
           console.log('on dissconnect')
+          ON_DISSCONNECT.emit()
         }
       )
     } catch (e) {
