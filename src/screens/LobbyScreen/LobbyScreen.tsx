@@ -1,16 +1,15 @@
 import { useState } from 'react'
 import HUD from '../../components/HUD'
-import useConsistentPlayerList from '../../utils/useConsistentPlayerList'
 import { PlayerEntity } from '../../state/types'
 import { useOnEntityAdded, useOnEntityRemoved } from 'miniplex-react'
 import { PlayersQuery } from '../../state/queries'
-import { myPlayer, useIsHost } from 'playroomkit'
+import { myPlayer, useIsHost, usePlayersList } from 'playroomkit'
 import useRemoteProcedureCallback from '../../utils/useRemoteProcedureCallback'
 import { quitMultiplayerSession } from '../../utils/helpers'
 import Monitor from '../../utils/Monitor/Monitor'
 
 export default function LobbyScreen({ onNext = () => {}, onBack = () => {} }: { onNext?: () => void; onBack?: () => void }) {
-  const players = useConsistentPlayerList()
+  const players = usePlayersList()
 
   const [entities, setEntities] = useState<PlayerEntity[]>([])
 
@@ -32,11 +31,13 @@ export default function LobbyScreen({ onNext = () => {}, onBack = () => {} }: { 
         <h1>LobbyScreen</h1>
         <h3>players from network</h3>
         <ul>
-          {players.map(p => (
-            <li key={p.id} style={{ color: p.getProfile().color.hexString as string }}>
+          {players.map(p => {
+            const color = p.getProfile().color ? p.getProfile().color.hexString : '#999'
+            return (
+            <li key={p.id} style={{ color }}>
               {p.id} {isHost && p.id === myPlayer().id && '(Host)'}
             </li>
-          ))}
+          )})}
         </ul>
         <h3>local entities</h3>
         <ul>
