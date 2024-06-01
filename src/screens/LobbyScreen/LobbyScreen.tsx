@@ -43,7 +43,7 @@ export default function LobbyScreen({ onNext = () => {}, onBack = () => {} }: { 
         <ul>
           {entities.map(p => (
             <li key={p.id} style={{ color: p.color as string }}>
-              {p.id} {p.isLocal && '(local)'} {isHost && !p.isLocal && <button onClick={() => p.playroomState!.kick()}>Kick</button>}
+              {p.id} {p.isLocal && '(local)'} { <button onClick={() => p.playroomState!.kick()}>Kick</button>}
             </li>
           ))}
         </ul>

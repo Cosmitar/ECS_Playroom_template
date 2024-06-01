@@ -34,8 +34,8 @@ export default function InsertCoinSystem() {
           console.log('on launch')
           ON_LAUNCH.emit()
         },
-        () => {
-          console.log('on dissconnect')
+        (p) => {
+          console.log('on dissconnect', p)
           ON_DISSCONNECT.emit()
         }
       )
