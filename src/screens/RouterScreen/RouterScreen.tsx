@@ -6,9 +6,11 @@ import HomeScreen from '../HomeScreen/HomeScreen'
 import { hasPlayroomId, setHashValue } from '../../utils/helpers'
 import GameplayScreen from '../GameplayScreen/GameplayScreen'
 import ResultsScreen from '../ResultsScreen/ResultsScreen'
-import InsertCoinSystem from '../../systems/InsertCoinSystem/InsertCoinSystem'
-import MultiplayerJoinQuitSystem from '../../systems/MultiplayerJoinQuitSystem/MultiplayerJoinQuitSystem'
-import MultiplayerNavSync from '../../systems/MultiplayerNavSync/MultiplayerNavSync'
+import InsertCoinManager from '../../managers/InsertCoinManager/InsertCoinManager'
+import MultiplayerJoinQuitManager from '../../managers/MultiplayerJoinQuitManager/MultiplayerJoinQuitManager'
+import MultiplayerNavSync from '../../managers/MultiplayerNavSyncManager/MultiplayerNavSyncManager'
+import { WorldProvider } from 'koota/react'
+import { world } from '../../ECS/ecs'
 
 export default function RouterScreen() {
   useEffect(() => {
@@ -24,14 +26,14 @@ export default function RouterScreen() {
   }
 
   return (
-    <>
+    <WorldProvider world={world}>
       <GameState.Match state={[GAME_STATES.HOME]}>
         <HomeScreen onNext={redirectPlayType} />
       </GameState.Match>
 
       <GameState.Match state={[GAME_STATES.LOBBY]}>
         <LobbyScreen onNext={enterGameplay} onBack={enterHome} />
-        <InsertCoinSystem />
+        <InsertCoinManager />
       </GameState.Match>
 
       <GameState.Match state={[GAME_STATES.GAMEPLAY]}>
@@ -43,8 +45,8 @@ export default function RouterScreen() {
       </GameState.Match>
 
       {/* <Systems /> */}
-      <MultiplayerJoinQuitSystem />
+      <MultiplayerJoinQuitManager />
       <MultiplayerNavSync />
-    </>
+    </WorldProvider>
   )
 }

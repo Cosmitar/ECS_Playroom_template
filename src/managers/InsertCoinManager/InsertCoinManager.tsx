@@ -10,7 +10,7 @@ export const ON_PLAYER_KICKED = new Event()
 export const ON_LAUNCH = new Event()
 export const ON_DISSCONNECT = new Event()
 
-export default function InsertCoinSystem() {
+export default function InsertCoinManager() {
   // logs
   useEffect(() => ON_ROOM_FULL.subscribe(() => console.log('Room full')), [])
   useEffect(() => ON_PLAYER_KICKED.subscribe(() => console.log('You are banned here')), [])

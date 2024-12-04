@@ -3,13 +3,12 @@
  */
 import { PlayerState, onPlayerJoin, usePlayersList } from 'playroomkit'
 import { useEffect } from 'react'
-import { PlayersQuery } from '../../state/queries'
-import { createPlayer } from '../../entities/Players/Players'
-import { ColorRepresentation } from 'three'
-import { ECS } from '../../state/ECS'
-import { ON_LAUNCH } from '../InsertCoinSystem/InsertCoinSystem'
+import { createPlayer } from '../../ECS/entities/Players/Players'
+import { ON_LAUNCH } from '../InsertCoinManager/InsertCoinManager'
+import { world } from '../../ECS/ecs'
+import PlayerTraits from '../../ECS/traits/playerTraits'
 
-export default function MultiplayerJoinQuitSystem() {
+export default function MultiplayerJoinQuitManager() {
   useEffect(
     () =>
       ON_LAUNCH.subscribe(() => {
@@ -34,19 +33,21 @@ export default function MultiplayerJoinQuitSystem() {
 }
 
 const setupPlayers = (players: PlayerState[]) => {
-  const { entities } = PlayersQuery
-  const ids = entities.map(e => e.id)
+  const entities = world.query(PlayerTraits.IsPlayer, PlayerTraits.Playroom)
+  const ids = entities.map(e => e.get(PlayerTraits.Playroom).state.id)
 
   players.map(p => {
     if (!ids.includes(p.id)) {
       const color = p.getProfile().color ? p.getProfile().color.hexString : '#999'
-      createPlayer(p, color as ColorRepresentation)
+      createPlayer(p, color)
     }
   })
 }
 
 const removePlayer = (player: PlayerState) => {
-  const playerEntity = PlayersQuery.where(({ id }) => id === player.id).first
+  const playerEntity = world
+    .query(PlayerTraits.IsPlayer, PlayerTraits.Playroom)
+    .find(e => e.get(PlayerTraits.Playroom).state.id === player.id)
 
-  playerEntity && ECS.world.remove(playerEntity)
+  playerEntity && playerEntity.destroy()
 }
