@@ -991,6 +991,11 @@ json5@^2.2.2:
   resolved "https://registry.yarnpkg.com/json5/-/json5-2.2.3.tgz#78cd6f1a19bdc12b73db5ad0c61efd66c1e29283"
   integrity sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==
 
+koota@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/koota/-/koota-0.1.7.tgz#9f8bad279b7dae0bcced0a60c17ce92d8d82e5a7"
+  integrity sha512-BT+y/3xeGm8JijVBw34CK9Ls7QcsfFnJHtr7Gbg1agHI+VD3O8Hwn8hPchBx739n1GgpQKGEqSR0u8OQ6SYhrw==
+
 ktx-parse@^0.4.5:
   version "0.4.5"
   resolved "https://registry.yarnpkg.com/ktx-parse/-/ktx-parse-0.4.5.tgz#79905e22281a9d3e602b2ff522df1ee7d1813aa6"
