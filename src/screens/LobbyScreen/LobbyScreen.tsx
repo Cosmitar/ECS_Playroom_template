@@ -1,25 +1,17 @@
-import { useState } from 'react'
 import HUD from '../../components/HUD'
-import { PlayerEntity } from '../../state/types'
-import { useOnEntityAdded, useOnEntityRemoved } from 'miniplex-react'
-import { PlayersQuery } from '../../state/queries'
 import { myPlayer, useIsHost, usePlayersList } from 'playroomkit'
 import useRemoteProcedureCallback from '../../utils/useRemoteProcedureCallback'
 import { quitMultiplayerSession } from '../../utils/helpers'
 import Monitor from '../../utils/Monitor/Monitor'
+import { useQuery } from 'koota/react'
+import PlayerTraits from '../../ECS/traits/playerTraits'
+
+const PlayersQuery = [PlayerTraits.IsPlayer, PlayerTraits.Playroom]
 
 export default function LobbyScreen({ onNext = () => {}, onBack = () => {} }: { onNext?: () => void; onBack?: () => void }) {
   const players = usePlayersList()
 
-  const [entities, setEntities] = useState<PlayerEntity[]>([])
-
-  useOnEntityAdded(PlayersQuery, e => {
-    setEntities(v => [...v, e])
-  })
-
-  useOnEntityRemoved(PlayersQuery, e => {
-    setEntities(v => v.filter(ee => ee.id !== e.id))
-  })
+  const entities = useQuery(...PlayersQuery)
 
   const remoteNext = useRemoteProcedureCallback('startGameplay', onNext)
 
@@ -34,16 +26,18 @@ export default function LobbyScreen({ onNext = () => {}, onBack = () => {} }: { 
           {players.map(p => {
             const color = p.getProfile().color ? p.getProfile().color.hexString : '#999'
             return (
-            <li key={p.id} style={{ color }}>
-              {p.id} {isHost && p.id === myPlayer().id && '(Host)'}
-            </li>
-          )})}
+              <li key={p.id} style={{ color }}>
+                {p.id} {isHost && p.id === myPlayer().id && '(Host)'}
+              </li>
+            )
+          })}
         </ul>
         <h3>local entities</h3>
         <ul>
           {entities.map(p => (
-            <li key={p.id} style={{ color: p.color as string }}>
-              {p.id} {p.isLocal && '(local)'} { <button onClick={() => p.playroomState!.kick()}>Kick</button>}
+            <li key={p.get(PlayerTraits.Playroom).state.id} style={{ color: p.get(PlayerTraits.Color) as string }}>
+              {p.get(PlayerTraits.Playroom).state.id} {p.get(PlayerTraits.IsLocalPlayer) && '(local)'}{' '}
+              {<button onClick={() => p.get(PlayerTraits.Playroom).state.kick()}>Kick</button>}
             </li>
           ))}
         </ul>
